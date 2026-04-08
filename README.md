@@ -16,7 +16,7 @@ Ao final, a VendaMais poderá acompanhar seus indicadores operacionais com uma d
 - https://github.com/matheusmotta7777
 
 ## Estrutura do Repositório
-
+```text
 DAS-VENDAMAIS
 └── docs
     ├── adr
@@ -29,3 +29,4 @@ DAS-VENDAMAIS
     │   ├── 01-context.md
     │   └── 02-container.md
     └── README.md
+```
