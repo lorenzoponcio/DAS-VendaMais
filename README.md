@@ -17,3 +17,15 @@ Ao final, a VendaMais poderá acompanhar seus indicadores operacionais com uma d
 
 ## Estrutura do Repositório
 
+DAS-VENDAMAIS
+└── docs
+    ├── adr
+    │   ├── ADR-001.md
+    │   └── ADR-002.md
+    ├── c4
+    │   ├── imgs
+    │   │   ├── C4_Nivel1.png
+    │   │   └── C4_Nivel2.png
+    │   ├── 01-context.md
+    │   └── 02-container.md
+    └── README.md
