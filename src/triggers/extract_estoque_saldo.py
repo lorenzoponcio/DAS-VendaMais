@@ -1,0 +1,13 @@
+import logging
+import azure.functions as func
+
+bp = func.Blueprint()
+
+@bp.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
+                   use_monitor=False)
+def extract_estoque_saldo(myTimer: func.TimerRequest) -> None:
+
+    if myTimer.past_due:
+        logging.info('The timer is past due!')
+
+    logging.info('Tabela estoque_saldo')
