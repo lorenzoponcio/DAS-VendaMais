@@ -3,131 +3,32 @@ import azure.functions as func
 
 app = func.FunctionApp()
 
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_cliente(myTimer: func.TimerRequest) -> None:
+# Importar para function pincipal
+from triggers.extract_categoria_produto import bp as extract_categoria_produto_bp
+from triggers.extract_cliente import bp as extract_cliente_bp
+from triggers.extract_entrega import bp as extract_entrega_bp
+from triggers.extract_estoque import bp as extract_estoque_bp
+from triggers.extract_estoque_movimentacao import bp as extract_estoque_movimentacao_bp
+from triggers.extract_estoque_saldo import bp as extract_estoque_saldo_bp
+from triggers.extract_pedido import bp as extract_pedido_bp
+from triggers.extract_pedido_item import bp as extract_pedido_item_bp
+from triggers.extract_produto import bp as extract_produto_bp
+from triggers.extract_regiao import bp as extract_regiao_bp
+from triggers.extract_representante import bp as extract_representante_bp
+from triggers.extract_titulo_receber import bp as extract_titulo_receber_bp
+from triggers.extract_transportadora import bp as extract_transportadora_bp
 
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela cliente')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_categoria_produto(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela categoria_produto')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_entrega(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela entrega')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_estoque(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela estoque')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_estoque_movimentacao(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela estoque_movimentacao')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_estoque_saldo(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela estoque_saldo')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_pedido(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela pedido')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_pedido_item(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela pedido_item')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_produto(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela produto')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_regiao(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela regiao')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_representante(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela representante')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_titulo_receber(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela titulo_receber')
-
-
-@app.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
-def extract_transportadora(myTimer: func.TimerRequest) -> None:
-
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Tabela transportadora')
+# Registrar
+app.register_functions(extract_categoria_produto_bp)
+app.register_functions(extract_cliente_bp)
+app.register_functions(extract_entrega_bp)
+app.register_functions(extract_estoque_bp)
+app.register_functions(extract_estoque_movimentacao_bp)
+app.register_functions(extract_estoque_saldo_bp)
+app.register_functions(extract_pedido_bp)
+app.register_functions(extract_pedido_item_bp)
+app.register_functions(extract_produto_bp)
+app.register_functions(extract_regiao_bp)
+app.register_functions(extract_representante_bp)
+app.register_functions(extract_titulo_receber_bp)
+app.register_functions(extract_transportadora_bp)
