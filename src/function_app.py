@@ -32,3 +32,4 @@ app.register_functions(extract_regiao_bp)
 app.register_functions(extract_representante_bp)
 app.register_functions(extract_titulo_receber_bp)
 app.register_functions(extract_transportadora_bp)
+
