@@ -1,5 +1,6 @@
 import logging
 import azure.functions as func
+import os
 
 bp = func.Blueprint()
 
@@ -7,7 +8,12 @@ bp = func.Blueprint()
                    use_monitor=False)
 def extract_titulo_receber(myTimer: func.TimerRequest) -> None:
 
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
+    sql_server = os.getenv('SQL_SERVER_SOURCES')
+    sql_database = os.getenv('SQL_DATABASE_SOURCES')
+    sql_user = os.getenv('SQL_USER_SOURCES')
+    sql_pass = os.getenv('SQL_PASSWORD_SOURCES')
 
-    logging.info('Tabela titulo_receber')
+    # if myTimer.past_due:
+    #     logging.info('The timer is past due!')
+
+    logging.info(f"""servidor: {sql_server}, banco: {sql_database}, usuario: {sql_user}""".format(sql_server=sql_server, sql_database=sql_database, sql_user=sql_user))
