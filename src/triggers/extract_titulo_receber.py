@@ -8,10 +8,10 @@ bp = func.Blueprint()
                    use_monitor=False)
 def extract_titulo_receber(myTimer: func.TimerRequest) -> None:
 
-    sql_server = os.getenv('SQL_SERVER_SOURCES')
-    sql_database = os.getenv('SQL_DATABASE_SOURCES')
-    sql_user = os.getenv('SQL_USER_SOURCES')
-    sql_pass = os.getenv('SQL_PASSWORD_SOURCES')
+    sql_server = os.getenv('SQL_SERVER_SOURCE')
+    sql_database = os.getenv('SQL_DATABASE_SOURCE')
+    sql_user = os.getenv('SQL_USER_SOURCE')
+    sql_pass = os.getenv('SQL_PASSWORD_SOURCE')
 
     # if myTimer.past_due:
     #     logging.info('The timer is past due!')
