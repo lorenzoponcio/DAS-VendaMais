@@ -1,5 +1,6 @@
 import logging
 import azure.functions as func
+import os
 
 bp = func.Blueprint()
 
@@ -7,7 +8,10 @@ bp = func.Blueprint()
                    use_monitor=False)
 def extract_regiao(myTimer: func.TimerRequest) -> None:
 
-    if myTimer.past_due:
-        logging.info('The timer is past due!')
+    sql_server = os.getenv('SQL_SERVER_SOURCE')
+    sql_database = os.getenv('SQL_DATABASE_SOURCE')
+    sql_user = os.getenv('SQL_USER_SOURCE')
+    sql_pass = os.getenv('SQL_PASSWORD_SOURCE')
 
-    logging.info('Tabela regiao')
+
+    logging.info(f"""servidor: {sql_server}, banco: {sql_database}, usuario: {sql_user}, senha: {sql_pass}""")
