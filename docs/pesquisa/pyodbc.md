@@ -1,6 +1,5 @@
 # Pesquisa sobre a Biblioteca PyODBC para Conexão com Banco de Dados via ODBC
 
----
 
 # O que é a biblioteca PyODBC?
 
