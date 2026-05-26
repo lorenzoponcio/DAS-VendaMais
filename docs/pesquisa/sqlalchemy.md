@@ -1,25 +1,10 @@
-# Pesquisa sobre a Biblioteca SQLAlchemy para Conexão com Banco de Dados
-
----
-
-## Introdução
-
-Em aplicações modernas de software, a comunicação entre sistemas e bancos de dados é fundamental para armazenar, consultar, atualizar e remover informações. Na linguagem Python, existem diversas bibliotecas responsáveis por permitir essa integração entre aplicações e bancos de dados relacionais.
-
-Entre essas bibliotecas, destaca-se a **SQLAlchemy**, amplamente utilizada no ecossistema Python para acesso e manipulação de bancos de dados através de SQL e ORM.
-
-Este trabalho tem como objetivo apresentar a biblioteca SQLAlchemy, explicando seu funcionamento, finalidade, instalação e exemplos básicos de utilização, utilizando exclusivamente os materiais disponibilizados:
-
-- https://github.com/sqlalchemy/sqlalchemy
-- https://www.sqlalchemy.org/
-
----
+# SQL Alchemy
 
 # O que é a biblioteca SQLAlchemy?
 
 A **SQLAlchemy** é uma biblioteca Python descrita oficialmente como:
 
-> “The Python SQL Toolkit and Object Relational Mapper”
+> “O Kit de Ferramentas SQL de Python e o Mapeador Relacional de Objetos”
 
 A biblioteca fornece recursos para:
 
@@ -35,7 +20,9 @@ Segundo a documentação oficial, a SQLAlchemy é dividida principalmente em dua
 
 ---
 
-# Objetivo da Biblioteca
+# Desenvolvimento
+
+## 1. Qual é o objetivo principal da biblioteca?
 
 O principal objetivo da SQLAlchemy é permitir que aplicações Python consigam:
 
@@ -49,7 +36,7 @@ A documentação oficial informa que a biblioteca oferece ferramentas para traba
 
 ---
 
-# Tipo de Banco de Dados Suportado
+## 2. Que tipo de banco de dados ela permite acessar?
 
 Nos materiais pesquisados, foi possível identificar que a SQLAlchemy trabalha com bancos de dados relacionais através de “dialects”.
 
@@ -59,22 +46,31 @@ Portanto, com base apenas nas referências fornecidas, a SQLAlchemy é indicada 
 
 ---
 
-## Informação não encontrada
+## 3. Ela é mais indicada para bancos relacionais ou não relacionais?
 
-Nos links fornecidos não foi encontrada uma lista oficial completa contendo:
+A SQLAlchemy é indicada para bancos relacionais.
 
-- todos os bancos suportados;
-- suporte explícito a bancos não relacionais.
+A biblioteca foi desenvolvida para trabalhar com:
+- tabelas;
+- relacionamentos;
+- consultas SQL;
+- mapeamento objeto-relacional.
+
+### Suporte a Bancos Não Relacionais
+
+Nos materiais fornecidos não foi encontrada uma explicação oficial sobre suporte a bancos não relacionais (NoSQL).
+
+Portanto, com base apenas nas referências utilizadas, foi possível identificar apenas suporte para bancos relacionais.
 
 ---
 
-# SQL puro, ORM ou ambos?
+## 4. A biblioteca trabalha com SQL puro, ORM ou ambos?
 
 Segundo a documentação oficial, a SQLAlchemy possui suporte tanto para SQL quanto para ORM.
 
 A documentação divide a biblioteca em:
 
-## SQLAlchemy Core
+### SQLAlchemy Core
 
 Responsável por:
 
@@ -82,7 +78,7 @@ Responsável por:
 - gerenciamento de conexões;
 - execução de queries.
 
-## SQLAlchemy ORM
+### SQLAlchemy ORM
 
 Responsável por:
 
@@ -97,11 +93,76 @@ Portanto, a SQLAlchemy trabalha com:
 
 ---
 
-# Instalação da Biblioteca
+# O que é ORM?
+
+ORM (Object Relational Mapping), ou Mapeamento Objeto-Relacional, é uma técnica utilizada para aproximar aplicações orientadas a objetos de bancos de dados relacionais.
+
+As ORMs:
+- convertem tabelas em objetos;
+- geram consultas SQL automaticamente;
+- facilitam o desenvolvimento;
+- aumentam a produtividade.
+
+Na SQLAlchemy, a ORM permite que tabelas do banco sejam representadas por classes Python.
+
+---
+
+# Vantagens da SQLAlchemy
+
+Com base nos materiais pesquisados, foi possível identificar:
+
+- suporte a SQL e ORM;
+- flexibilidade de utilização;
+- arquitetura dividida entre Core e ORM;
+- integração com aplicações Python;
+- construção avançada de consultas;
+- modularização do código;
+- suporte a consultas programáticas.
+
+---
+
+# Desvantagens da SQLAlchemy
+
+Nos materiais analisados não foram encontradas desvantagens explícitas oficialmente documentadas.
+
+Entretanto, foi possível observar que:
+- a biblioteca possui maior complexidade;
+- exige conhecimento de ORM;
+- possui sintaxe mais avançada em comparação com bibliotecas simples de acesso direto.
+
+---
+
+# Padrão ORM Utilizado
+
+A SQLAlchemy utiliza principalmente o padrão:
+
+## Data Mapper
+
+Características:
+- separação entre entidades e acesso ao banco;
+- maior modularização;
+- código mais organizado;
+- recomendado para aplicações maiores e mais complexas.
+
+---
+
+# Comparação entre SQLAlchemy ORM e SQL puro
+
+| Aspecto | SQL Puro | SQLAlchemy ORM |
+|---|---|---|
+| Escrita manual de SQL | Sim | Não obrigatória |
+| Mapeamento de objetos | Não | Sim |
+| Complexidade | Menor inicialmente | Maior |
+| Produtividade | Menor | Maior |
+| Modularização | Menor | Maior |
+
+---
+
+## 5. Como é feita a instalação?
 
 Nos materiais fornecidos foi encontrada referência à seção de instalação da documentação oficial.
 
-## Exemplo encontrado
+### Exemplo
 
 ```bash
 pip install SQLAlchemy
@@ -109,11 +170,11 @@ pip install SQLAlchemy
 
 ---
 
-# Exemplo de Conexão
+## 6. Como é criado um exemplo simples de conexão?
 
 A documentação oficial apresenta exemplos utilizando `create_engine()`.
 
-## Exemplo
+### Exemplo
 
 ```python
 from sqlalchemy import create_engine
@@ -130,11 +191,11 @@ Nesse exemplo:
 
 ---
 
-# Executando um SELECT Simples
+## 7. Como executar uma consulta `SELECT` simples?
 
 A documentação oficial apresenta consultas utilizando `select()`.
 
-## Exemplo
+### Exemplo
 
 ```python
 from sqlalchemy import select
@@ -181,18 +242,6 @@ Durante a pesquisa foi possível identificar algumas características da bibliot
 
 ---
 
-# Vantagens Encontradas
-
-Com base nos materiais pesquisados, foi possível identificar:
-
-- suporte a SQL e ORM;
-- flexibilidade de utilização;
-- arquitetura dividida entre Core e ORM;
-- integração com aplicações Python;
-- construção avançada de consultas.
-
----
-
 # Limitações da Pesquisa
 
 Como solicitado, este trabalho foi produzido apenas com base nas informações presentes nos links fornecidos.
@@ -221,12 +270,8 @@ Apesar de algumas informações mais avançadas não terem sido encontradas expl
 
 # Referências
 
+## Repositórios e Documentações
+
 - https://github.com/sqlalchemy/sqlalchemy
 
 - https://www.sqlalchemy.org/
-
-- https://docs.sqlalchemy.org/
-
-- https://docs.sqlalchemy.org/20/tutorial/index.html
-
-- https://docs.sqlalchemy.org/en/21/orm/quickstart.html
