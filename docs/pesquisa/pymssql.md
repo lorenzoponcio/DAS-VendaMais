@@ -1,7 +1,6 @@
 # Pesquisa sobre a Biblioteca pymssql para Conexão com Banco de Dados PostgreSQL
 
 
-
 # 1. Qual é o objetivo principal da biblioteca?
 
 Segundo a documentação oficial, o `pymssql` é uma interface de banco de dados para Python construída sobre o FreeTDS, fornecendo uma implementação compatível com o padrão Python DB-API (PEP-249) para Microsoft SQL Server.
