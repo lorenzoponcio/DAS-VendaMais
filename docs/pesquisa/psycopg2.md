@@ -1,182 +1,168 @@
-# Pesquisa sobre a Biblioteca SQLAlchemy para Conexão com Banco de Dados
+# Pesquisa sobre a Biblioteca Psycopg2 para Conexão com Banco de Dados PostgreSQL
 
 ---
 
 ## Introdução
 
-Em aplicações modernas de software, a comunicação entre sistemas e bancos de dados é fundamental para armazenar, consultar, atualizar e remover informações. Na linguagem Python, existem diversas bibliotecas responsáveis por permitir essa integração entre aplicações e bancos de dados relacionais.
+Em aplicações modernas de software, a comunicação entre sistemas e bancos de dados é uma etapa essencial para armazenamento, consulta, atualização e remoção de informações. Na linguagem Python, existem diversas bibliotecas responsáveis por permitir essa integração entre a aplicação e o banco de dados.
 
-Entre essas bibliotecas, destaca-se a **SQLAlchemy**, amplamente utilizada no ecossistema Python para acesso e manipulação de bancos de dados através de SQL e ORM.
-
-Este trabalho tem como objetivo apresentar a biblioteca SQLAlchemy, explicando seu funcionamento, finalidade, instalação e exemplos básicos de utilização, utilizando exclusivamente os materiais disponibilizados:
-
-- https://github.com/sqlalchemy/sqlalchemy
-- https://www.sqlalchemy.org/
+Entre essas bibliotecas, destaca-se a **psycopg2**, amplamente utilizada para conexão com bancos de dados PostgreSQL. A biblioteca oferece recursos que permitem executar comandos SQL diretamente em aplicações Python, facilitando o desenvolvimento de sistemas que dependem de persistência de dados.
+# Pesquisa sobre a Biblioteca Psycopg2 para Conexão com Banco de Dados PostgreSQL
 
 ---
 
-# O que é a biblioteca SQLAlchemy?
+## Introdução
 
-A **SQLAlchemy** é uma biblioteca Python descrita oficialmente como:
+Em aplicações modernas de software, a comunicação entre sistemas e bancos de dados é uma etapa essencial para armazenamento, consulta, atualização e remoção de informações. Na linguagem Python, existem diversas bibliotecas responsáveis por permitir essa integração entre a aplicação e o banco de dados.
 
-> “The Python SQL Toolkit and Object Relational Mapper”
+Entre essas bibliotecas, destaca-se a **psycopg2**, amplamente utilizada para conexão com bancos de dados PostgreSQL. A biblioteca oferece recursos que permitem executar comandos SQL diretamente em aplicações Python, facilitando o desenvolvimento de sistemas que dependem de persistência de dados.
 
-A biblioteca fornece recursos para:
+Este trabalho tem como objetivo apresentar a biblioteca psycopg2, explicando seu funcionamento, finalidade, instalação e exemplos básicos de utilização.
 
-- conexão com bancos de dados;
-- execução de comandos SQL;
-- construção programática de consultas;
-- mapeamento objeto-relacional (ORM).
+---
 
-Segundo a documentação oficial, a SQLAlchemy é dividida principalmente em duas partes:
+# O que é a biblioteca Psycopg2?
 
-- SQLAlchemy Core
-- SQLAlchemy ORM
+A **psycopg2** é uma biblioteca desenvolvida para permitir a conexão entre aplicações Python e bancos de dados PostgreSQL.
+
+Segundo a descrição encontrada na página oficial do projeto:
+
+> “Psycopg is the most popular PostgreSQL database adapter for the Python programming language.”
+
+A biblioteca atua como um adaptador de banco de dados, permitindo que comandos SQL sejam enviados do Python para o PostgreSQL.
+
+Além disso, a psycopg2 implementa o padrão **Python DB API 2.0**, que define uma interface padronizada para comunicação entre Python e bancos de dados relacionais.
 
 ---
 
 # Objetivo da Biblioteca
 
-O principal objetivo da SQLAlchemy é permitir que aplicações Python consigam:
+O principal objetivo da psycopg2 é permitir que aplicações Python consigam:
 
-- conectar-se a bancos de dados relacionais;
-- executar comandos SQL;
-- mapear objetos Python para tabelas do banco;
-- realizar consultas utilizando ORM;
-- gerenciar persistência de dados.
+- conectar-se ao PostgreSQL;
+- executar consultas SQL;
+- inserir registros;
+- atualizar dados;
+- remover informações;
+- recuperar resultados de consultas.
 
-A documentação oficial informa que a biblioteca oferece ferramentas para trabalhar tanto com SQL tradicional quanto com programação orientada a objetos.
+A biblioteca é utilizada principalmente em sistemas web, APIs, aplicações desktop e sistemas corporativos que utilizam PostgreSQL como banco de dados.
 
 ---
 
 # Tipo de Banco de Dados Suportado
 
-Nos materiais pesquisados, foi possível identificar que a SQLAlchemy trabalha com bancos de dados relacionais através de “dialects”.
+A psycopg2 foi desenvolvida especificamente para o banco de dados:
 
-A documentação menciona suporte a diferentes backends relacionais utilizando engines e dialetos específicos.
+- PostgreSQL
 
-Portanto, com base apenas nas referências fornecidas, a SQLAlchemy é indicada para bancos de dados relacionais.
+O PostgreSQL é um banco de dados relacional, ou seja, baseado em tabelas, relacionamentos e linguagem SQL.
 
----
-
-## Informação não encontrada
-
-Nos links fornecidos não foi encontrada uma lista oficial completa contendo:
-
-- todos os bancos suportados;
-- suporte explícito a bancos não relacionais.
+Portanto, a psycopg2 é indicada para bancos de dados relacionais.
 
 ---
 
 # SQL puro, ORM ou ambos?
 
-Segundo a documentação oficial, a SQLAlchemy possui suporte tanto para SQL quanto para ORM.
+Nos materiais pesquisados foi possível identificar o uso de comandos SQL diretamente através do método `execute()`.
 
-A documentação divide a biblioteca em:
+## Exemplo encontrado
 
-## SQLAlchemy Core
+```python
+cur.execute("SELECT version();")
+```
 
-Responsável por:
+Isso demonstra que a biblioteca trabalha com SQL puro.
 
-- construção de comandos SQL;
-- gerenciamento de conexões;
-- execução de queries.
+---
 
-## SQLAlchemy ORM
+## Informação não encontrada
 
-Responsável por:
+Nos links fornecidos não foi encontrada uma explicação oficial informando:
 
-- mapear classes Python para tabelas;
-- persistência de objetos;
-- consultas orientadas a objetos.
-
-Portanto, a SQLAlchemy trabalha com:
-
-- SQL puro;
-- ORM.
+- se a biblioteca possui suporte ORM;
+- se pode ser utilizada em conjunto com ORMs;
+- comparação entre SQL puro e ORM.
 
 ---
 
 # Instalação da Biblioteca
 
-Nos materiais fornecidos foi encontrada referência à seção de instalação da documentação oficial.
+A instalação da psycopg2 pode ser realizada utilizando o gerenciador de pacotes `pip`.
 
-## Exemplo encontrado
+## Instalação padrão
 
 ```bash
-pip install SQLAlchemy
+pip install psycopg2
+```
+
+## Instalação da versão binary
+
+```bash
+pip install psycopg2-binary
 ```
 
 ---
 
 # Exemplo de Conexão
 
-A documentação oficial apresenta exemplos utilizando `create_engine()`.
+A conexão com o banco PostgreSQL é feita utilizando o método `connect()`.
 
 ## Exemplo
 
 ```python
-from sqlalchemy import create_engine
+import psycopg2
 
-engine = create_engine("sqlite+pysqlite:///:memory:", echo=True)
+conn = psycopg2.connect(
+    database="test",
+    user="postgres",
+    password="secret",
+    host="127.0.0.1",
+    port="5432"
+)
 ```
 
 Nesse exemplo:
 
-- `create_engine()` cria a conexão com o banco;
-- `sqlite+pysqlite` representa o dialeto utilizado;
-- `:memory:` cria um banco SQLite em memória;
-- `echo=True` exibe os comandos SQL executados.
+- `database` representa o banco de dados;
+- `user` representa o usuário;
+- `password` representa a senha;
+- `host` representa o servidor;
+- `port` representa a porta utilizada pelo PostgreSQL.
 
 ---
 
 # Executando um SELECT Simples
 
-A documentação oficial apresenta consultas utilizando `select()`.
+Após criar a conexão, é possível executar consultas SQL utilizando um cursor.
 
 ## Exemplo
 
 ```python
-from sqlalchemy import select
+cur = conn.cursor()
 
-stmt = select(User).where(User.name == "spongebob")
+cur.execute("SELECT version();")
+
+record = cur.fetchone()
+
+print(record)
 ```
 
 Nesse exemplo:
 
-- `select()` cria uma consulta SQL;
-- `where()` adiciona uma condição;
-- `User` representa uma classe mapeada pelo ORM.
+- `cursor()` cria um cursor para comunicação com o banco;
+- `execute()` executa o comando SQL;
+- `fetchone()` recupera um resultado da consulta.
 
 ---
 
-# Exemplo de Modelo ORM
-
-A documentação oficial também apresenta exemplos de definição de modelos ORM.
-
-## Exemplo
-
-```python
-class User(Base):
-    __tablename__ = "user_account"
-```
-
-Nesse exemplo:
-
-- `User` representa uma entidade da aplicação;
-- `__tablename__` define o nome da tabela no banco.
-
----
-
-# Características da SQLAlchemy
+# Características da Psycopg2
 
 Durante a pesquisa foi possível identificar algumas características da biblioteca:
 
-- suporte a SQL;
-- suporte a ORM;
-- construção programática de consultas;
-- gerenciamento de conexões;
-- mapeamento objeto-relacional;
+- compatibilidade com PostgreSQL;
+- implementação do padrão DB API 2.0;
+- execução de comandos SQL;
 - integração com aplicações Python.
 
 ---
@@ -185,11 +171,10 @@ Durante a pesquisa foi possível identificar algumas características da bibliot
 
 Com base nos materiais pesquisados, foi possível identificar:
 
-- suporte a SQL e ORM;
-- flexibilidade de utilização;
-- arquitetura dividida entre Core e ORM;
-- integração com aplicações Python;
-- construção avançada de consultas.
+- ampla utilização na comunidade Python;
+- compatibilidade com PostgreSQL;
+- interface padronizada DB API 2.0;
+- execução direta de SQL.
 
 ---
 
@@ -199,34 +184,222 @@ Como solicitado, este trabalho foi produzido apenas com base nas informações p
 
 Por esse motivo, algumas informações não foram encontradas oficialmente nos materiais analisados:
 
-- lista completa de bancos suportados;
-- limitações técnicas oficiais;
-- comparação detalhada com outras bibliotecas;
+- comparação com outras bibliotecas;
+- vantagens e desvantagens detalhadas;
+- suporte oficial a ORM;
+- cenários de uso avançados;
 - análise de desempenho;
-- cenários avançados de uso.
+- limitações técnicas da biblioteca.
 
 ---
 
 # Conclusão
 
-A biblioteca SQLAlchemy é uma solução utilizada para conectar aplicações Python a bancos de dados relacionais. Sua principal função é permitir a execução de comandos SQL e o uso de ORM dentro de aplicações Python.
+A biblioteca psycopg2 é uma solução utilizada para conectar aplicações Python ao banco de dados PostgreSQL. Sua principal função é permitir a execução de comandos SQL diretamente pela aplicação, possibilitando operações de leitura e manipulação de dados.
 
-Durante a pesquisa foi possível observar que a biblioteca oferece uma arquitetura dividida entre Core e ORM, permitindo diferentes formas de interação com bancos de dados.
+Durante a pesquisa foi possível observar que a biblioteca possui ampla utilização e segue o padrão DB API 2.0, sendo indicada para aplicações que utilizam PostgreSQL como banco de dados relacional.
 
-Os exemplos encontrados na documentação oficial demonstram recursos para criação de conexões, consultas SQL e definição de modelos ORM.
-
-Apesar de algumas informações mais avançadas não terem sido encontradas explicitamente nos materiais fornecidos, foi possível identificar que a SQLAlchemy é uma biblioteca bastante completa para desenvolvimento de aplicações Python com persistência de dados.
+Apesar de algumas informações mais avançadas não terem sido encontradas nos materiais fornecidos, os exemplos analisados demonstram que a psycopg2 oferece recursos básicos e essenciais para comunicação entre Python e PostgreSQL.
 
 ---
 
 # Referências
 
-- https://github.com/sqlalchemy/sqlalchemy
+- https://github.com/psycopg/psycopg2.git
 
-- https://www.sqlalchemy.org/
+- https://pypi.org/project/psycopg2/
 
-- https://docs.sqlalchemy.org/
+- https://www.psycopg.org/docs/usage.html
+Este trabalho tem como objetivo apresentar a biblioteca psycopg2, explicando seu funcionamento, finalidade, instalação e exemplos básicos de utilização.
 
-- https://docs.sqlalchemy.org/20/tutorial/index.html
+---
 
-- https://docs.sqlalchemy.org/en/21/orm/quickstart.html
+# O que é a biblioteca Psycopg2?
+
+A **psycopg2** é uma biblioteca desenvolvida para permitir a conexão entre aplicações Python e bancos de dados PostgreSQL.
+
+Segundo a descrição encontrada na página oficial do projeto:
+
+> “Psycopg is the most popular PostgreSQL database adapter for the Python programming language.”
+
+A biblioteca atua como um adaptador de banco de dados, permitindo que comandos SQL sejam enviados do Python para o PostgreSQL.
+
+Além disso, a psycopg2 implementa o padrão **Python DB API 2.0**, que define uma interface padronizada para comunicação entre Python e bancos de dados relacionais.
+
+---
+
+# Objetivo da Biblioteca
+
+O principal objetivo da psycopg2 é permitir que aplicações Python consigam:
+
+- conectar-se ao PostgreSQL;
+- executar consultas SQL;
+- inserir registros;
+- atualizar dados;
+- remover informações;
+- recuperar resultados de consultas.
+
+A biblioteca é utilizada principalmente em sistemas web, APIs, aplicações desktop e sistemas corporativos que utilizam PostgreSQL como banco de dados.
+
+---
+
+# Tipo de Banco de Dados Suportado
+
+A psycopg2 foi desenvolvida especificamente para o banco de dados:
+
+- PostgreSQL
+
+O PostgreSQL é um banco de dados relacional, ou seja, baseado em tabelas, relacionamentos e linguagem SQL.
+
+Portanto, a psycopg2 é indicada para bancos de dados relacionais.
+
+---
+
+# SQL puro, ORM ou ambos?
+
+Nos materiais pesquisados foi possível identificar o uso de comandos SQL diretamente através do método `execute()`.
+
+## Exemplo encontrado
+
+```python
+cur.execute("SELECT version();")
+```
+
+Isso demonstra que a biblioteca trabalha com SQL puro.
+
+---
+
+## Informação não encontrada
+
+Nos links fornecidos não foi encontrada uma explicação oficial informando:
+
+- se a biblioteca possui suporte ORM;
+- se pode ser utilizada em conjunto com ORMs;
+- comparação entre SQL puro e ORM.
+
+---
+
+# Instalação da Biblioteca
+
+A instalação da psycopg2 pode ser realizada utilizando o gerenciador de pacotes `pip`.
+
+## Instalação padrão
+
+```bash
+pip install psycopg2
+```
+
+## Instalação da versão binary
+
+```bash
+pip install psycopg2-binary
+```
+
+---
+
+# Exemplo de Conexão
+
+A conexão com o banco PostgreSQL é feita utilizando o método `connect()`.
+
+## Exemplo
+
+```python
+import psycopg2
+
+conn = psycopg2.connect(
+    database="test",
+    user="postgres",
+    password="secret",
+    host="127.0.0.1",
+    port="5432"
+)
+```
+
+Nesse exemplo:
+
+- `database` representa o banco de dados;
+- `user` representa o usuário;
+- `password` representa a senha;
+- `host` representa o servidor;
+- `port` representa a porta utilizada pelo PostgreSQL.
+
+---
+
+# Executando um SELECT Simples
+
+Após criar a conexão, é possível executar consultas SQL utilizando um cursor.
+
+## Exemplo
+
+```python
+cur = conn.cursor()
+
+cur.execute("SELECT version();")
+
+record = cur.fetchone()
+
+print(record)
+```
+
+Nesse exemplo:
+
+- `cursor()` cria um cursor para comunicação com o banco;
+- `execute()` executa o comando SQL;
+- `fetchone()` recupera um resultado da consulta.
+
+---
+
+# Características da Psycopg2
+
+Durante a pesquisa foi possível identificar algumas características da biblioteca:
+
+- compatibilidade com PostgreSQL;
+- implementação do padrão DB API 2.0;
+- execução de comandos SQL;
+- integração com aplicações Python.
+
+---
+
+# Vantagens Encontradas
+
+Com base nos materiais pesquisados, foi possível identificar:
+
+- ampla utilização na comunidade Python;
+- compatibilidade com PostgreSQL;
+- interface padronizada DB API 2.0;
+- execução direta de SQL.
+
+---
+
+# Limitações da Pesquisa
+
+Como solicitado, este trabalho foi produzido apenas com base nas informações presentes nos links fornecidos.
+
+Por esse motivo, algumas informações não foram encontradas oficialmente nos materiais analisados:
+
+- comparação com outras bibliotecas;
+- vantagens e desvantagens detalhadas;
+- suporte oficial a ORM;
+- cenários de uso avançados;
+- análise de desempenho;
+- limitações técnicas da biblioteca.
+
+---
+
+# Conclusão
+
+A biblioteca psycopg2 é uma solução utilizada para conectar aplicações Python ao banco de dados PostgreSQL. Sua principal função é permitir a execução de comandos SQL diretamente pela aplicação, possibilitando operações de leitura e manipulação de dados.
+
+Durante a pesquisa foi possível observar que a biblioteca possui ampla utilização e segue o padrão DB API 2.0, sendo indicada para aplicações que utilizam PostgreSQL como banco de dados relacional.
+
+Apesar de algumas informações mais avançadas não terem sido encontradas nos materiais fornecidos, os exemplos analisados demonstram que a psycopg2 oferece recursos básicos e essenciais para comunicação entre Python e PostgreSQL.
+
+---
+
+# Referências
+
+- https://github.com/psycopg/psycopg2.git
+
+- https://pypi.org/project/psycopg2/
+
+- https://www.psycopg.org/docs/usage.html
