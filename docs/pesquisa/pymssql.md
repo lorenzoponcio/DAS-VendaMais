@@ -160,38 +160,6 @@ Esse modelo permite executar consultas utilizando filtros e parâmetros.
 
 ---
 
-# Características encontradas na documentação
-
-A documentação lista diversas características da biblioteca `pymssql`, incluindo:
-
-- Compatibilidade com Python 3;
-- Suporte a Unicode;
-- Compatibilidade com múltiplos sistemas operacionais;
-- Implementação utilizando Cython para melhor desempenho;
-- Suporte a stored procedures;
-- Suporte a bulk copy;
-- Compatibilidade com Azure SQL Database;
-- Implementação compatível com Python DB-API.
-
-Essas características demonstram que a biblioteca foi desenvolvida para integração profissional com ambientes Microsoft SQL Server.
-
----
-
-# Limitações da pesquisa
-
-Conforme solicitado, somente foram utilizadas informações encontradas nos links fornecidos e conteúdos diretamente relacionados a eles.
-
-Informações que **não foram encontradas explicitamente** nas fontes:
-
-- Comparação oficial com outras bibliotecas (`pyodbc`, `psycopg2`, `SQLAlchemy`, `sqlite3`);
-- Informações oficiais sobre ORM integrado;
-- Tabela oficial de vantagens e desvantagens;
-- Cenários de uso detalhados;
-- Benchmarks de desempenho;
-- Comparações de performance com outras bibliotecas.
-
----
-
 # Conclusão
 
 O `pymssql` é uma biblioteca Python voltada para comunicação com Microsoft SQL Server e Azure SQL Database. A documentação mostra que a biblioteca utiliza SQL puro por meio da interface DB-API do Python, permitindo executar comandos SQL diretamente através de cursores.
@@ -199,56 +167,6 @@ O `pymssql` é uma biblioteca Python voltada para comunicação com Microsoft SQ
 A instalação é simples e realizada via `pip`, e os exemplos oficiais demonstram como criar conexões, executar consultas e manipular resultados retornados pelo banco de dados.
 
 Além disso, a documentação destaca suporte para recursos importantes como Unicode, stored procedures, bulk copy e integração com Azure SQL Database, tornando a biblioteca adequada para aplicações que utilizam infraestrutura Microsoft SQL Server.
-
-
-
-
-
-
-
-
-## Código
-
-O código utiliza a biblioteca pymssql para conectar Python ao Microsoft SQL Server. Ele lê as credenciais de acesso, estabelece conexão com o banco tempdb, cria a tabela persons, insere registros e salva as alterações com commit().
-
-Depois, executa um comando SELECT para buscar pessoas cujo salesrep seja "John Doe", percorre os resultados com fetchone() e imprime os dados encontrados na tela. Ao final, a conexão com o banco é fechada com conn.close().
-
-```python
-from os import getenv
-import pymssql
-
-server = getenv("PYMSSQL_TEST_SERVER")
-user = getenv("PYMSSQL_TEST_USERNAME")
-password = getenv("PYMSSQL_TEST_PASSWORD")
-
-conn = pymssql.connect(server, user, password, "tempdb")
-cursor = conn.cursor()
-cursor.execute("""
-IF OBJECT_ID('persons', 'U') IS NOT NULL
-    DROP TABLE persons
-CREATE TABLE persons (
-    id INT NOT NULL,
-    name VARCHAR(100),
-    salesrep VARCHAR(100),
-    PRIMARY KEY(id)
-)
-""")
-cursor.executemany(
-    "INSERT INTO persons VALUES (%d, %s, %s)",
-    [(1, 'John Smith', 'John Doe'),
-     (2, 'Jane Doe', 'Joe Dog'),
-     (3, 'Mike T.', 'Sarah H.')])
-# you must call commit() to persist your data if you don't set autocommit to True
-conn.commit()
-
-cursor.execute('SELECT * FROM persons WHERE salesrep=%s', 'John Doe')
-row = cursor.fetchone()
-while row:
-    print("ID=%d, Name=%s" % (row[0], row[1]))
-    row = cursor.fetchone()
-
-conn.close()
-```
 
 
 # Referências
