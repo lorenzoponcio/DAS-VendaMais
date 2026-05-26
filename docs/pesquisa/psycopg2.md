@@ -1,19 +1,5 @@
 # Pesquisa sobre a Biblioteca Psycopg2 para Conexão com Banco de Dados PostgreSQL
 
----
-
-## Introdução
-
-Em aplicações modernas de software, a comunicação entre sistemas e bancos de dados é uma etapa essencial para armazenamento, consulta, atualização e remoção de informações. Na linguagem Python, existem diversas bibliotecas responsáveis por permitir essa integração entre a aplicação e o banco de dados.
-
-Entre essas bibliotecas, destaca-se a **psycopg2**, amplamente utilizada para conexão com bancos de dados PostgreSQL. A biblioteca oferece recursos que permitem executar comandos SQL diretamente em aplicações Python, facilitando o desenvolvimento de sistemas que dependem de persistência de dados.
-
-Além da psycopg2, existem bibliotecas ORM (Object Relational Mapping), como Django ORM e SQLAlchemy, que oferecem uma camada de abstração sobre o banco de dados. Essas ferramentas permitem maior produtividade no desenvolvimento, porém podem gerar impacto no desempenho das aplicações.
-
-Este trabalho tem como objetivo apresentar a biblioteca psycopg2, explicando seu funcionamento, finalidade, instalação, exemplos básicos de utilização e comparações com bibliotecas ORM.
-
----
-
 # O que é a biblioteca Psycopg2?
 
 A **psycopg2** é uma biblioteca desenvolvida para permitir a conexão entre aplicações Python e bancos de dados PostgreSQL.
