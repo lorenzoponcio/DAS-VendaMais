@@ -2,20 +2,6 @@
 
 ---
 
-## Introdução
-
-Em aplicações modernas de software, a comunicação entre sistemas e bancos de dados é uma etapa essencial para armazenamento, consulta, atualização e remoção de informações. Na linguagem Python, existem diversas bibliotecas responsáveis por permitir essa integração entre a aplicação e diferentes bancos de dados.
-
-Entre essas bibliotecas, destaca-se a **pyodbc**, uma biblioteca utilizada para conectar aplicações Python a bancos de dados por meio da tecnologia **ODBC** (*Open Database Connectivity*). Essa tecnologia permite que uma aplicação se comunique com diferentes bancos de dados desde que exista um driver ODBC compatível instalado no sistema.
-
-A biblioteca pyodbc permite executar comandos SQL diretamente em aplicações Python, sendo bastante utilizada em integrações com bancos corporativos, automações, relatórios, APIs e sistemas que precisam acessar bases de dados relacionais.
-
-Além da pyodbc, existem bibliotecas ORM (*Object Relational Mapping*), como Django ORM e SQLAlchemy, que oferecem uma camada de abstração sobre o banco de dados. Essas ferramentas permitem maior produtividade no desenvolvimento, porém podem gerar impacto no desempenho das aplicações.
-
-Este trabalho tem como objetivo apresentar a biblioteca pyodbc, explicando seu funcionamento, finalidade, instalação, exemplos básicos de utilização e sua relação com bancos de dados relacionais e SQL puro.
-
----
-
 # O que é a biblioteca PyODBC?
 
 A **pyodbc** é uma biblioteca desenvolvida para permitir a conexão entre aplicações Python e bancos de dados utilizando ODBC.
