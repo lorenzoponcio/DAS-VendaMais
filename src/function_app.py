@@ -17,6 +17,7 @@ from triggers.extract_regiao import bp as extract_regiao_bp
 from triggers.extract_representante import bp as extract_representante_bp
 from triggers.extract_titulo_receber import bp as extract_titulo_receber_bp
 from triggers.extract_transportadora import bp as extract_transportadora_bp
+from triggers.poc_psycopg2 import bp as poc_psycopg2_bp
 
 # Registrar
 app.register_functions(extract_categoria_produto_bp)
@@ -32,3 +33,4 @@ app.register_functions(extract_regiao_bp)
 app.register_functions(extract_representante_bp)
 app.register_functions(extract_titulo_receber_bp)
 app.register_functions(extract_transportadora_bp)
+app.register_functions(poc_psycopg2_bp)
