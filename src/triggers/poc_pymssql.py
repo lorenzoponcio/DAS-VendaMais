@@ -20,7 +20,9 @@ def poc_pymssql(myTimer: func.TimerRequest) -> None:
     sql_pass = os.getenv("SQL_PASSWORD_SOURCE")
 
     try:
-        inicio = time.perf_counter()
+        logging.info("Iniciando POC pymssql")
+
+        inicio_total = time.perf_counter()
 
         conn = pymssql.connect(
             server=sql_server,
@@ -33,20 +35,34 @@ def poc_pymssql(myTimer: func.TimerRequest) -> None:
         )
 
         with conn.cursor() as cursor:
+
             query = "SELECT TOP 5 * FROM erp.pedido_item"
+
+            logging.info("Executando consulta...")
+
+            inicio_query = time.perf_counter()
 
             cursor.execute(query)
             rows = cursor.fetchall()
+
+            fim_query = time.perf_counter()
 
             logging.info(f"Linhas retornadas: {len(rows)}")
 
             for row in rows:
                 logging.info(row)
 
+            logging.info(
+                f"Tempo da query pymssql: {fim_query - inicio_query:.4f} segundos"
+            )
+
         conn.close()
 
-        fim = time.perf_counter()
-        logging.info(f"Tempo total pymssql: {fim - inicio:.4f} segundos")
+        fim_total = time.perf_counter()
+
+        logging.info(
+            f"Tempo total pymssql: {fim_total - inicio_total:.4f} segundos"
+        )
 
     except Exception as e:
         logging.exception(f"Erro na POC pymssql: {e}")
