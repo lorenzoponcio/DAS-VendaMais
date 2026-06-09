@@ -1,40 +1,67 @@
 import logging
 import azure.functions as func
 import os
+import time
+
 from sqlalchemy import create_engine, text
 
 bp = func.Blueprint()
 
-@bp.timer_trigger(schedule="0 * * * * *", arg_name="myTimer", run_on_startup=False,
-                   use_monitor=False)
+@bp.timer_trigger(
+    schedule="0 * * * * *",
+    arg_name="myTimer",
+    run_on_startup=False,
+    use_monitor=False
+)
 def poc_sqlalchemy(myTimer: func.TimerRequest) -> None:
 
-    sql_server = os.getenv('SQL_SERVER_SOURCE')
-    sql_database = os.getenv('SQL_DATABASE_SOURCE')
-    sql_user = os.getenv('SQL_USER_SOURCE')
-    sql_pass = os.getenv('SQL_PASSWORD_SOURCE')
+    sql_server = os.getenv("SQL_SERVER_SOURCE")
+    sql_database = os.getenv("SQL_DATABASE_SOURCE")
+    sql_user = os.getenv("SQL_USER_SOURCE")
+    sql_pass = os.getenv("SQL_PASSWORD_SOURCE")
 
-
-    logging.info(f"""servidor: {sql_server}, banco: {sql_database}, usuario: {sql_user}, senha: {sql_pass}""")
-
-    engine = create_engine(f'postgresql+psycopg2://{sql_user}:{sql_pass}@{sql_server}/{sql_database}')
-
-   
     try:
+        logging.info("Iniciando POC SQLAlchemy")
+
+        inicio_total = time.perf_counter()
+
+        logging.info("Criando engine...")
+
+        engine = create_engine(
+            f"mssql+pymssql://{sql_user}:{sql_pass}@{sql_server}:1433/{sql_database}"
+        )
+
+        logging.info("Abrindo conexão...")
+
         with engine.connect() as conn:
-            # Cria um cursor para executar a consulta   
-            cursor = conn.connection.cursor()
 
-            query = "select top 5 * from erp.pedido_item"
+            logging.info("Executando consulta...")
 
-            # Executa a consulta SQL
-            cursor.execute(query)
+            inicio_query = time.perf_counter()
 
-            # Busca todos os resultados da consulta
-            rows = cursor.fetchone()
+            result = conn.execute(
+                text("SELECT TOP 5 * FROM erp.pedido_item")
+            )
 
-            logging.info(rows)           
+            rows = result.fetchall()
+
+            fim_query = time.perf_counter()
+
+            logging.info(f"Linhas retornadas: {len(rows)}")
+
+            for row in rows:
+                logging.info(row)
+
+            logging.info(
+                f"Tempo da query SQLAlchemy: {fim_query - inicio_query:.4f} segundos"
+            )
+
+        fim_total = time.perf_counter()
+
+        logging.info(
+            f"Tempo total SQLAlchemy: {fim_total - inicio_total:.4f} segundos"
+        )
 
     except Exception as e:
-        logging.error(f"Erro ao ler erp.pedido: {str(e)}")
+        logging.exception(f"Erro na POC SQLAlchemy: {e}")
         raise
