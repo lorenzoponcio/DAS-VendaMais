@@ -19,6 +19,7 @@ from triggers.extract_titulo_receber import bp as extract_titulo_receber_bp
 from triggers.extract_transportadora import bp as extract_transportadora_bp
 from triggers.poc_psycopg2 import bp as poc_psycopg2_bp
 from triggers.poc_sqlalchemy import bp as poc_sqlalchemy_bp
+from triggers.poc_pymssql import bp as poc_pymssql_bp
 
 # Registrar
 app.register_functions(extract_categoria_produto_bp)
@@ -36,3 +37,4 @@ app.register_functions(extract_titulo_receber_bp)
 app.register_functions(extract_transportadora_bp)
 app.register_functions(poc_psycopg2_bp)
 app.register_functions(poc_sqlalchemy_bp)
+app.register_functions(poc_pymssql_bp)
