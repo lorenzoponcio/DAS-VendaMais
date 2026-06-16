@@ -57,6 +57,7 @@ def extract_categoria_produto(myTimer: func.TimerRequest) -> None:
             query_source = """
                 SELECT TOP 5 *
                 FROM erp.categoria_produto
+                ORDER BY id_categoria
             """
 
             cursor_source.execute(query_source)
@@ -68,42 +69,65 @@ def extract_categoria_produto(myTimer: func.TimerRequest) -> None:
 
             all_columns = [column[0] for column in cursor_source.description]
 
-        # Colunas identity que NÃO devem ser inseridas no destino
+        # Não inserir a coluna identity do destino
         identity_columns = ["id_categoria"]
 
-        columns = [
+        columns_insert = [
             column
             for column in all_columns
             if column.lower() not in identity_columns
         ]
 
         # =========================
-        # 2. Preparar dados
-        # =========================
-        data = [
-            tuple(getattr(row, column) for column in columns)
-            for row in rows
-        ]
-
-        # =========================
-        # 3. Inserir no destino
+        # 2. Inserir no destino
         # =========================
         with pyodbc.connect(conn_str_dest) as conn_dest:
             cursor_dest = conn_dest.cursor()
 
-            columns_sql = ", ".join(columns)
-            placeholders = ", ".join(["?"] * len(columns))
+            inserted_count = 0
 
-            insert_sql = f"""
-                INSERT INTO dbo.categoria_produto ({columns_sql})
-                VALUES ({placeholders})
-            """
+            for row in rows:
+                source_id = getattr(row, "id_categoria")
 
-            cursor_dest.executemany(insert_sql, data)
+                cursor_dest.execute(
+                    """
+                    SELECT COUNT(1)
+                    FROM dbo.categoria_produto
+                    WHERE id_origem = ?
+                    """,
+                    source_id
+                )
+
+                exists = cursor_dest.fetchone()[0]
+
+                if exists:
+                    logging.info(
+                        f"Categoria já existe no destino. id_origem={source_id}"
+                    )
+                    continue
+
+                columns_sql = ", ".join(["id_origem"] + columns_insert)
+                placeholders = ", ".join(["?"] * (len(columns_insert) + 1))
+
+                insert_sql = f"""
+                    INSERT INTO dbo.categoria_produto ({columns_sql})
+                    VALUES ({placeholders})
+                """
+
+                values = [source_id] + [
+                    getattr(row, column)
+                    for column in columns_insert
+                ]
+
+                cursor_dest.execute(insert_sql, values)
+                inserted_count += 1
+
             conn_dest.commit()
 
-            logging.info(f"{len(data)} registros inseridos no destino com sucesso.")
+            logging.info(
+                f"{inserted_count} novos registros inseridos no destino."
+            )
 
     except Exception as e:
-        logging.error(f"Erro ao migrar erp.categoria_produto: {str(e)}")
+        logging.error(f"Erro ao migrar categoria_produto: {str(e)}")
         raise
