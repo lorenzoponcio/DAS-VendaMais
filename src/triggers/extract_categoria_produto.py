@@ -57,7 +57,7 @@ def extract_categoria_produto(myTimer: func.TimerRequest) -> None:
             query_source = """
                 SELECT TOP 5 *
                 FROM erp.categoria_produto
-                ORDER BY id_categoria
+                ORDER BY id
             """
 
             cursor_source.execute(query_source)
