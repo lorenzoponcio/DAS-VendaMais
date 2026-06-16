@@ -48,6 +48,9 @@ def extract_categoria_produto(myTimer: func.TimerRequest) -> None:
     )
 
     try:
+        # =========================
+        # 1. Buscar dados na origem
+        # =========================
         with pyodbc.connect(conn_str_source) as conn_source:
             cursor_source = conn_source.cursor()
 
@@ -63,8 +66,28 @@ def extract_categoria_produto(myTimer: func.TimerRequest) -> None:
                 logging.info("Nenhum registro encontrado na origem.")
                 return
 
-            columns = [column[0] for column in cursor_source.description]
+            all_columns = [column[0] for column in cursor_source.description]
 
+        # Colunas identity que NÃO devem ser inseridas no destino
+        identity_columns = ["id_categoria"]
+
+        columns = [
+            column
+            for column in all_columns
+            if column.lower() not in identity_columns
+        ]
+
+        # =========================
+        # 2. Preparar dados
+        # =========================
+        data = [
+            tuple(getattr(row, column) for column in columns)
+            for row in rows
+        ]
+
+        # =========================
+        # 3. Inserir no destino
+        # =========================
         with pyodbc.connect(conn_str_dest) as conn_dest:
             cursor_dest = conn_dest.cursor()
 
@@ -75,8 +98,6 @@ def extract_categoria_produto(myTimer: func.TimerRequest) -> None:
                 INSERT INTO dbo.categoria_produto ({columns_sql})
                 VALUES ({placeholders})
             """
-
-            data = [tuple(row) for row in rows]
 
             cursor_dest.executemany(insert_sql, data)
             conn_dest.commit()
