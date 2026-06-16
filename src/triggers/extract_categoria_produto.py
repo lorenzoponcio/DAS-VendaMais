@@ -48,16 +48,21 @@ def extract_categoria_produto(myTimer: func.TimerRequest) -> None:
     )
 
     try:
-        # =========================
-        # 1. Buscar dados na origem
-        # =========================
+        # Buscar dados da origem
         with pyodbc.connect(conn_str_source) as conn_source:
             cursor_source = conn_source.cursor()
 
             query_source = """
-                SELECT TOP 5 *
+                SELECT TOP 5
+                    id_categoria,
+                    cd_categoria,
+                    nm_categoria,
+                    fl_ativo,
+                    dt_inclusao,
+                    dt_atualizacao,
+                    nm_sistema_origem
                 FROM erp.categoria_produto
-                ORDER BY id
+                ORDER BY id_categoria
             """
 
             cursor_source.execute(query_source)
@@ -67,66 +72,62 @@ def extract_categoria_produto(myTimer: func.TimerRequest) -> None:
                 logging.info("Nenhum registro encontrado na origem.")
                 return
 
-            all_columns = [column[0] for column in cursor_source.description]
-
-        # Não inserir a coluna identity do destino
-        identity_columns = ["id_categoria"]
-
-        columns_insert = [
-            column
-            for column in all_columns
-            if column.lower() not in identity_columns
-        ]
-
-        # =========================
-        # 2. Inserir no destino
-        # =========================
+        # Inserir no destino
         with pyodbc.connect(conn_str_dest) as conn_dest:
             cursor_dest = conn_dest.cursor()
 
             inserted_count = 0
 
             for row in rows:
-                source_id = getattr(row, "id_categoria")
+                id_categoria_origem = row.id_categoria
 
+                # Verifica se já existe no destino
                 cursor_dest.execute(
                     """
                     SELECT COUNT(1)
                     FROM dbo.categoria_produto
-                    WHERE id_origem = ?
+                    WHERE cd_registro_origem = ?
                     """,
-                    source_id
+                    str(id_categoria_origem)
                 )
 
                 exists = cursor_dest.fetchone()[0]
 
                 if exists:
                     logging.info(
-                        f"Categoria já existe no destino. id_origem={source_id}"
+                        f"Categoria já existe no destino. cd_registro_origem={id_categoria_origem}"
                     )
                     continue
 
-                columns_sql = ", ".join(["id_origem"] + columns_insert)
-                placeholders = ", ".join(["?"] * (len(columns_insert) + 1))
-
-                insert_sql = f"""
-                    INSERT INTO dbo.categoria_produto ({columns_sql})
-                    VALUES ({placeholders})
+                insert_sql = """
+                    INSERT INTO dbo.categoria_produto (
+                        cd_categoria,
+                        nm_categoria,
+                        fl_ativo,
+                        dt_inclusao,
+                        dt_atualizacao,
+                        nm_sistema_origem,
+                        cd_registro_origem
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
                 """
 
-                values = [source_id] + [
-                    getattr(row, column)
-                    for column in columns_insert
-                ]
+                values = (
+                    row.cd_categoria,
+                    row.nm_categoria,
+                    row.fl_ativo,
+                    row.dt_inclusao,
+                    row.dt_atualizacao,
+                    row.nm_sistema_origem,
+                    str(id_categoria_origem)
+                )
 
                 cursor_dest.execute(insert_sql, values)
                 inserted_count += 1
 
             conn_dest.commit()
 
-            logging.info(
-                f"{inserted_count} novos registros inseridos no destino."
-            )
+            logging.info(f"{inserted_count} novos registros inseridos no destino.")
 
     except Exception as e:
         logging.error(f"Erro ao migrar categoria_produto: {str(e)}")
