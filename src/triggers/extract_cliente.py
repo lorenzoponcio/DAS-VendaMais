@@ -54,7 +54,7 @@ def extract_cliente(myTimer: func.TimerRequest) -> None:
 
             query_source = """
                 SELECT TOP 5 *
-                FROM erp.pedido_item
+                FROM erp.cliente
             """
 
             cursor_source.execute(query_source)
@@ -72,13 +72,13 @@ def extract_cliente(myTimer: func.TimerRequest) -> None:
 
             for row in rows:
 
-                id_origem = row.id_pedido_item  # Ajuste para a chave primária correta
+                id_origem = row.id_cliente  # Ajuste para a chave primária correta
 
                 # Verifica se o registro já existe no destino
                 cursor_dest.execute(
                     """
                     SELECT COUNT(1)
-                    FROM dbo.pedido_item
+                    FROM dbo.cliente
                     WHERE cd_registro_origem = ?
                     """,
                     str(id_origem)
