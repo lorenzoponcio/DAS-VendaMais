@@ -1,24 +1,30 @@
-import azure.functions as func
 import logging
+import azure.functions as func
 import os
 import pyodbc
 
 bp = func.Blueprint()
 
-
-@bp.timer_trigger(schedule="0 0 6 * * *", arg_name="timer", run_on_startup=False)
+@bp.timer_trigger(
+    schedule="0 0 6 * * *",
+    arg_name="timer",
+    run_on_startup=False
+)
 def extract_pedido_item(timer: func.TimerRequest) -> None:
-    
+
+    # Origem
     sql_server = os.getenv("SQL_SERVER_SOURCE")
     sql_database = os.getenv("SQL_DATABASE_SOURCE")
     sql_user = os.getenv("SQL_USER_SOURCE")
     sql_pass = os.getenv("SQL_PASSWORD_SOURCE")
 
-    logging.info(f"servidor: {sql_server},  banco: {sql_database}, usuario:{sql_user}, senha: {sql_pass} ...")
+    # Destino
+    sql_server_dest = os.getenv("SQL_SERVER_DEST")
+    sql_database_dest = os.getenv("SQL_DATABASE_DEST")
+    sql_user_dest = os.getenv("SQL_USER_DEST")
+    sql_pass_dest = os.getenv("SQL_PASSWORD_DEST")
 
-
-    # Configura a string de conexão para o banco de dados SQL Server
-    conn_str = (
+    conn_str_source = (
         "DRIVER={ODBC Driver 18 for SQL Server};"
         f"SERVER={sql_server};"
         f"DATABASE={sql_database};"
@@ -29,23 +35,107 @@ def extract_pedido_item(timer: func.TimerRequest) -> None:
         "Connection Timeout=30;"
     )
 
-   
+    conn_str_dest = (
+        "DRIVER={ODBC Driver 18 for SQL Server};"
+        f"SERVER={sql_server_dest};"
+        f"DATABASE={sql_database_dest};"
+        f"UID={sql_user_dest};"
+        f"PWD={sql_pass_dest};"
+        "Encrypt=yes;"
+        "TrustServerCertificate=no;"
+        "Connection Timeout=30;"
+    )
+
     try:
-        # Estabelece a conexão com o banco de dados usando pyodbc
-        with pyodbc.connect(conn_str) as conn:
-            # Cria um cursor para executar a consulta   
-            cursor = conn.cursor()
-            
-            query = "select top 5 * from erp.pedido_item"
+        # Buscar dados da origem
+        with pyodbc.connect(conn_str_source) as conn_source:
+            cursor_source = conn_source.cursor()
 
-            # Executa a consulta SQL
-            cursor.execute(query)
+            query_source = """
+                SELECT *
+                FROM erp.pedido_item
+            """
 
-            # Busca todos os resultados da consulta
-            rows = cursor.fetchall()
+            cursor_source.execute(query_source)
+            rows = cursor_source.fetchall()
 
-            logging.info(rows)           
+            if not rows:
+                logging.info("Nenhum registro encontrado na origem.")
+                return
+
+        # Inserir no destino
+        with pyodbc.connect(conn_str_dest) as conn_dest:
+            cursor_dest = conn_dest.cursor()
+
+            inserted_count = 0
+
+            for row in rows:
+
+                # Chave primária da origem
+                id_origem = row.id_pedido_item
+
+                # Verifica se o registro já existe no destino
+                cursor_dest.execute(
+                    """
+                    SELECT COUNT(1)
+                    FROM dbo.pedido_item
+                    WHERE cd_registro_origem = ?
+                    """,
+                    str(id_origem)
+                )
+
+                exists = cursor_dest.fetchone()[0]
+
+                if exists:
+                    logging.info(
+                        f"Registro já existe no destino. cd_registro_origem={id_origem}"
+                    )
+                    continue
+
+                insert_sql = """
+                    INSERT INTO dbo.pedido_item (
+                        id_pedido,
+                        id_produto,
+                        nr_sequencia_item,
+                        qt_item,
+                        vl_preco_unitario,
+                        vl_bruto,
+                        vl_desconto,
+                        vl_liquido,
+                        dt_inclusao,
+                        dt_atualizacao,
+                        nm_sistema_origem,
+                        cd_registro_origem
+                    )
+                    VALUES (
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    )
+                """
+
+                values = (
+                    row.id_pedido,
+                    row.id_produto,
+                    row.nr_sequencia_item,
+                    row.qt_item,
+                    row.vl_preco_unitario,
+                    row.vl_bruto,
+                    row.vl_desconto,
+                    row.vl_liquido,
+                    row.dt_inclusao,
+                    row.dt_atualizacao,
+                    row.nm_sistema_origem,
+                    str(id_origem)
+                )
+
+                cursor_dest.execute(insert_sql, values)
+                inserted_count += 1
+
+            conn_dest.commit()
+
+            logging.info(
+                f"{inserted_count} novos registros inseridos no destino."
+            )
 
     except Exception as e:
-        logging.error(f"Erro ao ler erp.pedido: {str(e)}")
+        logging.error(f"Erro ao migrar pedido_item: {str(e)}")
         raise
