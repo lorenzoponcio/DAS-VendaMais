@@ -14,16 +14,16 @@ bp = func.Blueprint()
 def extract_cliente(myTimer: func.TimerRequest) -> None:
 
     # Origem
-    sql_server = os.getenv('SQL_SERVER_SOURCE')
-    sql_database = os.getenv('SQL_DATABASE_SOURCE')
-    sql_user = os.getenv('SQL_USER_SOURCE')
-    sql_pass = os.getenv('SQL_PASSWORD_SOURCE')
+    sql_server = os.getenv("SQL_SERVER_SOURCE")
+    sql_database = os.getenv("SQL_DATABASE_SOURCE")
+    sql_user = os.getenv("SQL_USER_SOURCE")
+    sql_pass = os.getenv("SQL_PASSWORD_SOURCE")
 
     # Destino
-    sql_server_dest = os.getenv('SQL_SERVER_DEST')
-    sql_database_dest = os.getenv('SQL_DATABASE_DEST')
-    sql_user_dest = os.getenv('SQL_USER_DEST')
-    sql_pass_dest = os.getenv('SQL_PASSWORD_DEST')
+    sql_server_dest = os.getenv("SQL_SERVER_DEST")
+    sql_database_dest = os.getenv("SQL_DATABASE_DEST")
+    sql_user_dest = os.getenv("SQL_USER_DEST")
+    sql_pass_dest = os.getenv("SQL_PASSWORD_DEST")
 
     conn_str_source = (
         "DRIVER={ODBC Driver 18 for SQL Server};"
@@ -72,7 +72,8 @@ def extract_cliente(myTimer: func.TimerRequest) -> None:
 
             for row in rows:
 
-                id_origem = row.id_cliente  # Ajuste para a chave primária correta
+                # Chave primária da origem
+                id_origem = row.id_cliente
 
                 # Verifica se o registro já existe no destino
                 cursor_dest.execute(
@@ -93,19 +94,42 @@ def extract_cliente(myTimer: func.TimerRequest) -> None:
                     continue
 
                 insert_sql = """
-                    INSERT INTO dbo.pedido_item (
-                        -- Adicione aqui as colunas do destino
+                    INSERT INTO dbo.cliente (
+                        cd_cliente,
+                        nm_cliente,
+                        tp_pessoa,
+                        nr_cnpj_cpf,
+                        ds_email,
+                        ds_telefone,
+                        id_regiao,
+                        id_representante,
+                        dt_cadastro,
+                        fl_ativo,
+                        dt_inclusao,
+                        dt_atualizacao,
+                        nm_sistema_origem,
                         cd_registro_origem
                     )
                     VALUES (
-                        -- Adicione aqui os parâmetros correspondentes
-                        ?
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                     )
                 """
 
                 values = (
-                    # Adicione aqui os valores das colunas
-                    str(id_origem),
+                    row.cd_cliente,
+                    row.nm_cliente,
+                    row.tp_pessoa,
+                    row.nr_cnpj_cpf,
+                    row.ds_email,
+                    row.ds_telefone,
+                    row.id_regiao,
+                    row.id_representante,
+                    row.dt_cadastro,
+                    row.fl_ativo,
+                    row.dt_inclusao,
+                    row.dt_atualizacao,
+                    row.nm_sistema_origem,
+                    str(id_origem)
                 )
 
                 cursor_dest.execute(insert_sql, values)
@@ -118,5 +142,5 @@ def extract_cliente(myTimer: func.TimerRequest) -> None:
             )
 
     except Exception as e:
-        logging.error(f"Erro ao migrar pedido_item: {str(e)}")
+        logging.error(f"Erro ao migrar cliente: {str(e)}")
         raise
