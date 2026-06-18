@@ -53,7 +53,7 @@ def extract_cliente(myTimer: func.TimerRequest) -> None:
             cursor_source = conn_source.cursor()
 
             query_source = """
-                SELECT TOP 5 *
+                SELECT *
                 FROM erp.cliente
             """
 
