@@ -65,4 +65,4 @@ DAS-VENDAMAIS
 
 Visualização de dados e indicadores do VendaMais
 
-![alt text](image.png)
+![Dashboard](docs/Dashboard.png)
